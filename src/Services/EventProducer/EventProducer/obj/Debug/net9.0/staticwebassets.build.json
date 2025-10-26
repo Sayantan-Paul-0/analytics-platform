@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "+goByLaUcYrCDOYoedEuBTDGlCbFQko5McGpAsIdr1w=",
+  "Source": "EventProducer",
+  "BasePath": "_content/EventProducer",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

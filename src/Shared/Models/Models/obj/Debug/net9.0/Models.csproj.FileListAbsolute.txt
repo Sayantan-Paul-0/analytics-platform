@@ -1,0 +1,12 @@
+/Users/sayantan_paul/Codebase/projects/analytics-platform/src/Shared/Models/Models/bin/Debug/net9.0/Models.deps.json
+/Users/sayantan_paul/Codebase/projects/analytics-platform/src/Shared/Models/Models/bin/Debug/net9.0/Models.dll
+/Users/sayantan_paul/Codebase/projects/analytics-platform/src/Shared/Models/Models/bin/Debug/net9.0/Models.pdb
+/Users/sayantan_paul/Codebase/projects/analytics-platform/src/Shared/Models/Models/obj/Debug/net9.0/Models.GeneratedMSBuildEditorConfig.editorconfig
+/Users/sayantan_paul/Codebase/projects/analytics-platform/src/Shared/Models/Models/obj/Debug/net9.0/Models.AssemblyInfoInputs.cache
+/Users/sayantan_paul/Codebase/projects/analytics-platform/src/Shared/Models/Models/obj/Debug/net9.0/Models.AssemblyInfo.cs
+/Users/sayantan_paul/Codebase/projects/analytics-platform/src/Shared/Models/Models/obj/Debug/net9.0/Models.csproj.CoreCompileInputs.cache
+/Users/sayantan_paul/Codebase/projects/analytics-platform/src/Shared/Models/Models/obj/Debug/net9.0/Models.sourcelink.json
+/Users/sayantan_paul/Codebase/projects/analytics-platform/src/Shared/Models/Models/obj/Debug/net9.0/Models.dll
+/Users/sayantan_paul/Codebase/projects/analytics-platform/src/Shared/Models/Models/obj/Debug/net9.0/refint/Models.dll
+/Users/sayantan_paul/Codebase/projects/analytics-platform/src/Shared/Models/Models/obj/Debug/net9.0/Models.pdb
+/Users/sayantan_paul/Codebase/projects/analytics-platform/src/Shared/Models/Models/obj/Debug/net9.0/ref/Models.dll

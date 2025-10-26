@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "iWkOL9zD+tTAqEdKDIwq0l1DgEgrDJQinFPdFtOoVGw=",
+  "Source": "EventConsumer",
+  "BasePath": "_content/EventConsumer",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

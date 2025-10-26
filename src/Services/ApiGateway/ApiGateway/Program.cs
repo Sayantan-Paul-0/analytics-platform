@@ -1,41 +1,69 @@
+using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateLogger();
+
+builder.Host.UseSerilog();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddHealthChecks();
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.MapHealthChecks("/health");
 
-var summaries = new[]
+// Proxy to EventProducer
+app.MapPost("/api/events", async (HttpContext context, IHttpClientFactory httpClientFactory) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    var client = httpClientFactory.CreateClient();
+    var producerUrl = builder.Configuration["Services:EventProducer"] ?? "http://localhost:5001";
 
-app.MapGet("/weatherforecast", () =>
+    var request = new HttpRequestMessage(HttpMethod.Post, $"{producerUrl}/api/events");
+    request.Content = new StreamContent(context.Request.Body);
+    request.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+
+    var response = await client.SendAsync(request);
+    var content = await response.Content.ReadAsStringAsync();
+
+    return Results.Content(content, "application/json", statusCode: (int)response.StatusCode);
+});
+
+// System status
+app.MapGet("/api/status", async (IHttpClientFactory httpClientFactory) =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+    var client = httpClientFactory.CreateClient();
+    var services = new Dictionary<string, bool>();
+
+    try
+    {
+        var producerUrl = builder.Configuration["Services:EventProducer"] ?? "http://localhost:5001";
+        var producerResponse = await client.GetAsync($"{producerUrl}/health");
+        services["event-producer"] = producerResponse.IsSuccessStatusCode;
+    }
+    catch { services["event-producer"] = false; }
+
+    try
+    {
+        var consumerUrl = builder.Configuration["Services:EventConsumer"] ?? "http://localhost:5002";
+        var consumerResponse = await client.GetAsync($"{consumerUrl}/health");
+        services["event-consumer"] = consumerResponse.IsSuccessStatusCode;
+    }
+    catch { services["event-consumer"] = false; }
+
+    return Results.Ok(new { services, timestamp = DateTime.UtcNow });
+});
+
+Log.Information("API Gateway started");
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
